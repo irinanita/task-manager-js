@@ -27,7 +27,7 @@ li.className ='collection-item';
 
 // Create text node and append to li 
 // Note: .append does not have a return value while .appendChild returns the appended Node object, but allows only a single item
-li.appendChild(document.createTextNode(taskInput.value));
+li.textContent = taskInput.value;
 
 // Create new link element
 const link = document.createElement('a');
