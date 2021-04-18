@@ -149,7 +149,7 @@ function removeTaskFromLocalStorage(taskItem) {
   tasks.forEach(function (task, index) {
     if (taskItem.textContent === task) {
       // Delete the task based on its index in the array
-      tasks.splice(index, 1);
+      tasks.splice(index);
     }
   });
   localStorage.setItem("tasks",JSON.stringify(tasks));
@@ -163,6 +163,12 @@ function clearTasks() {
   while (taskList.firstChild) {
     taskList.removeChild(taskList.firstChild);
   }
+
+  // Clear from LS
+  clearTasksFromLocalStorage(){
+    localStorage.clear();
+  }
+
 }
 
 // Filter Tasks
