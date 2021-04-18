@@ -11,7 +11,7 @@ loadEventListeners();
 // Load all event listeners
 function loadEventListeners() {
   // DOM load event
-  document.addEventListener("DOMContentLoaded",getTasks)
+  document.addEventListener("DOMContentLoaded", getTasks);
   // Add task event
   form.addEventListener("submit", addTask);
   // Remove task event
@@ -20,6 +20,44 @@ function loadEventListeners() {
   clearBtn.addEventListener("click", clearTasks);
   // Filter tasks events
   filter.addEventListener("keyup", filterTasks);
+}
+
+// Get Tasks from LS
+function getTasks() {
+  let tasks;
+  // Check local storage for existing tasks
+  if (localStorage.getItem("tasks") === null) {
+    tasks = [];
+  } else {
+    // Local storage is able to store only strings so we need to parse it
+    tasks = JSON.parse(localStorage.getItem("tasks"));
+  }
+  // Loop through the tasks we've found
+  // Create elements in DOM
+
+  tasks.forEach(function (task) {
+    // Create li element
+    const li = document.createElement("li");
+    // Add class
+    li.className = "collection-item";
+
+    li.appendChild(document.createTextNode(task));
+
+    // Create new link element
+    const link = document.createElement("a");
+
+    // Add class
+    link.className = "delete-item secondary-content";
+
+    // Add icon html
+    link.innerHTML = '<i class="fa fa-remove"></i>';
+
+    // Append link to li
+    li.appendChild(link);
+
+    // Append li to ul
+    taskList.appendChild(li);
+  });
 }
 
 // Add Task
@@ -70,19 +108,19 @@ function addTask(e) {
 }
 
 //Store Task
-function storeTaskInLocalStorage(task){
+function storeTaskInLocalStorage(task) {
   let tasks;
   // Check local storage for existing tasks
-  if(localStorage.getItem("tasks") === null){
-  tasks=[];
+  if (localStorage.getItem("tasks") === null) {
+    tasks = [];
   } else {
     // Local storage is able to store only strings so we need to parse it
-    tasks=JSON.parse(localStorage.getItem("tasks"));
+    tasks = JSON.parse(localStorage.getItem("tasks"));
   }
-   // Add new task
-   tasks.push(task);
-   // Stringify before storin in LS
-   localStorage.setItem("tasks",JSON.stringify(tasks));
+  // Add new task
+  tasks.push(task);
+  // Stringify before storin in LS
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 // Remove Task
@@ -90,8 +128,31 @@ function removeTask(e) {
   if (e.target.parentElement.classList.contains("delete-item")) {
     if (confirm("Are you sure?")) {
       e.target.parentElement.parentElement.remove();
+
+      // Remove task from local storage
+      removeTaskFromLocalStorage(e.target.parentElement.parentElement);
     }
   }
+}
+
+// Remove from LS
+function removeTaskFromLocalStorage(taskItem) {
+  let tasks;
+  // Check local storage for existing tasks
+  if (localStorage.getItem("tasks") === null) {
+    tasks = [];
+  } else {
+    // Local storage is able to store only strings so we need to parse it
+    tasks = JSON.parse(localStorage.getItem("tasks"));
+    console.log(tasks,"tasks")
+  }
+  tasks.forEach(function (task, index) {
+    if (taskItem.textContent === task) {
+      // Delete the task based on its index in the array
+      tasks.splice(index, 1);
+    }
+  });
+  localStorage.setItem("tasks",JSON.stringify(tasks));
 }
 
 // Clear all Tasks
@@ -116,41 +177,4 @@ function filterTasks(e) {
       task.style.display = "none";
     }
   });
-}
-
-// Get Tasks from LS
-function getTasks(){
-  let tasks;
-  // Check local storage for existing tasks
-  if(localStorage.getItem("tasks") === null){
-  tasks=[];
-  } else {
-    // Local storage is able to store only strings so we need to parse it
-    tasks=JSON.parse(localStorage.getItem("tasks"));
-  }
-// Loop through the tasks we've found
-tasks.forEach(function(task){
-   // Create li element
-   const li = document.createElement("li");
-   // Add class
-   li.className = "collection-item";
-
-   li.appendChild(document.createTextNode(task));
-
-   // Create new link element
-   const link = document.createElement("a");
- 
-   // Add class
-   link.className = "delete-item secondary-content";
- 
-   // Add icon html
-   link.innerHTML = '<i class="fa fa-remove"></i>';
- 
-   // Append link to li
-   li.appendChild(link);
- 
-   // Append li to ul
-   taskList.appendChild(li);
- 
-})
 }
