@@ -1,51 +1,70 @@
 // Define UI vars
-const form = document.querySelector('#task-form');
-const taskList = document.querySelector('.collection');
-const clearBtn = document.querySelector('.clear-tasks');
-const filter = document.querySelector('#filter');
-const taskInput = document.querySelector('#task');
+const form = document.querySelector("#task-form");
+const taskList = document.querySelector(".collection");
+const clearBtn = document.querySelector(".clear-tasks");
+const filter = document.querySelector("#filter");
+const taskInput = document.querySelector("#task");
 
 // Load all event listeners
 loadEventListeners();
 
 // Load all event listeners
-function loadEventListeners(){
-  form.addEventListener('submit',addTask);
+function loadEventListeners() {
+  // Add task event
+  form.addEventListener("submit", addTask);
+  // Remove task event
+  taskList.addEventListener("click", removeTask);
 }
 
 // Add Task
-function addTask(e){
-if(taskInput.value === ''){
-  alert('Add a task')
-}
+function addTask(e) {
+  if (taskInput.value === "") {
+    alert("Add a task");
+  }
 
-// Create li element
-const li = document.createElement('li');
+  // Create li element
+  const li = document.createElement("li");
 
-// Add class
-li.className ='collection-item';
+  // Add class
+  li.className = "collection-item";
 
-// Create text node and append to li 
-// Note: .append does not have a return value while .appendChild returns the appended Node object, but allows only a single item
-li.textContent = taskInput.value;
+  // Create text node and append to li
 
-// Create new link element
-const link = document.createElement('a');
+  /* Note:
+ 1. .append vs .appendChild. Ther former does not have a return value while .appendChild returns the appended Node object, but allows only a single item. .append is more recent? .append() allows you to also append DOMString objects whereas Node.appendChild() only accepts Node objects.
+ 2. createTextNode() vs textContent: createTextNode() is a method and  it creates an element, then you must do something with it (for ex append it as a child);
+ so it is useful if you want to have a new element and place it somewhere . textContent is a property you may get or set, with a unique statement and nothing else;
+ so it is useful when you only want to change the content of an already existing element 
+ */
 
-// Add class
-link.className = 'delete-item secondary-content';
+  li.appendChild(document.createTextNode(taskInput.value));
 
-// Add icon html
-link.innerHTML = '<i class="fa fa-remove"></i>';
+  // Create new link element
+  const link = document.createElement("a");
 
-// Append link to li
-li.appendChild(link);
+  // Add class
+  link.className = "delete-item secondary-content";
 
-// Append li to ul
-taskList.appendChild(li);
+  // Add icon html
+  link.innerHTML = '<i class="fa fa-remove"></i>';
 
-// Clear input
-taskInput.value = '';
+  // Append link to li
+  li.appendChild(link);
+
+  // Append li to ul
+  taskList.appendChild(li);
+
+  // Clear input
+  taskInput.value = "";
 
   e.preventDefault();
+}
+
+// Remove Task
+function removeTask(e) {
+  if (e.target.parentElement.classList.contains("delete-item")) {
+    if (confirm("Are you sure?")) {
+      e.target.parentElement.parentElement.remove();
+    }
+  }
 }
