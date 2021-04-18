@@ -144,7 +144,7 @@ function removeTaskFromLocalStorage(taskItem) {
   } else {
     // Local storage is able to store only strings so we need to parse it
     tasks = JSON.parse(localStorage.getItem("tasks"));
-    console.log(tasks,"tasks")
+    console.log(tasks, "tasks");
   }
   tasks.forEach(function (task, index) {
     if (taskItem.textContent === task) {
@@ -152,7 +152,7 @@ function removeTaskFromLocalStorage(taskItem) {
       tasks.splice(index);
     }
   });
-  localStorage.setItem("tasks",JSON.stringify(tasks));
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 // Clear all Tasks
@@ -165,10 +165,12 @@ function clearTasks() {
   }
 
   // Clear from LS
-  clearTasksFromLocalStorage(){
-    localStorage.clear();
-  }
+  clearTasksFromLocalStorage();
+}
 
+// Remove everything from local storage
+function clearTasksFromLocalStorage() {
+  localStorage.clear();
 }
 
 // Filter Tasks
