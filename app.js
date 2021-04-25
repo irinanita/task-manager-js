@@ -63,7 +63,8 @@ function getTasks() {
 // Add Task
 function addTask(e) {
   if (taskInput.value === "") {
-    alert("Add a task");
+    alert("Please write something");
+    return
   }
 
   // Create li element
@@ -144,7 +145,7 @@ function removeTaskFromLocalStorage(taskItem) {
   } else {
     // Local storage is able to store only strings so we need to parse it
     tasks = JSON.parse(localStorage.getItem("tasks"));
-    console.log(tasks, "tasks");
+    
   }
   tasks.forEach(function (task, index) {
     if (taskItem.textContent === task) {
